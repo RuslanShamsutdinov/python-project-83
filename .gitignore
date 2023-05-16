@@ -10,3 +10,4 @@ coverage.xml
 /Lib/
 /Scripts/
 .idea
+.env
