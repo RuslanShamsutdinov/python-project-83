@@ -11,3 +11,4 @@ coverage.xml
 /Scripts/
 .idea
 .env
+dist
