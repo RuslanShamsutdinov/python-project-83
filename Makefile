@@ -1,6 +1,6 @@
-include .env
-
-$(eval export $(shell sed -ne 's/ *#.*$$//; /./ s/=.*$$// p' .env))
+#include .env
+#
+#$(eval export $(shell sed -ne 's/ *#.*$$//; /./ s/=.*$$// p' .env))
 
 install:
 	poetry install
@@ -18,6 +18,7 @@ test-coverage:
 	poetry run pytest --cov=gendiff --cov-report xml
 dev:
 	poetry run flask --app page_analyzer:app run
-	
+
+PORT ?= 8000
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
