@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <main class="flex-grow-1">
+    <div class="container-lg mt-3">
+    <tbody>
+        {% for url in url_list %}
+        <tr>
+          <td>{{ url.id }}</td>
+          
+          <td>{{ url.name }}</td>
+        </tr>
+
+      {% endfor %}
+    </tbody>
+    </div>
+  </main>
+
+{% endblock %}

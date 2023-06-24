@@ -17,7 +17,7 @@ test:
 test-coverage:
 	poetry run pytest --cov=gendiff --cov-report xml
 dev:
-	poetry run flask --app page_analyzer:app run
+	poetry run flask --app page_analyzer:app --debug run
 
 PORT ?= 8000
 start:
