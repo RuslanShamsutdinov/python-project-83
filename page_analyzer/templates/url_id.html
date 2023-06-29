@@ -1,42 +1,54 @@
 {% extends "base.html" %}
-{% block content3 %}
-
-  <main class="flex-grow-1">
-    <div class="container-lg mt-3">
-      <h1>Сайты</h1>
-
-    
-<div class="table-responsive">
-  <table class="table table-bordered table-hover text-nowrap" data-test="urls">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Имя</th>
-      <th>Последняя проверка</th>
-      <th>Код ответа</th>
-    </tr>
-    </thead>
-    <tbody>
-        {% for url in url_list %}
+{% block content %}
+<div class="container">
+    <h1 class="h1 my-5">Сайт: {{ url.name }}</h1>
+    <table class="table table-hover table-bordered table-responsive my-5 py-5" data-test="url">
         <tr>
-          <td>{{url.id}}</td>
-          <td>
-            <a href="{{ url_for('url_page', id=url.id) }}">
-              {{url.name}}
-            </a>
-          </td>
-          
-          <td>{{url.created_at}}</td>
-          
-          
-          <td>{{url.status_code}}</td>
-          
+            <td>ID</td>
+            <td>{{ url.id }}</td>
         </tr>
-
-      {% endfor %}
-    </tbody>
-  </table>
+        <tr>
+            <td>Имя</td>
+            <td>{{ url.name }}</td>
+        </tr>
+        <tr>
+            <td>Дата создания</td>
+            <td>{{ url.created_at }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <h2 class="my-5">Проверки</h2>
+        <form method="post" action="{{ url_for('url_check', url_id=url.id) }}">
+            <input type="hidden">
+            <input type="submit" class="btn btn-primary" value="Запустить проверку">
+        </form>
+    </div>
+    <div>
+        <table class="table table-hover table-bordered table-responsive my-5 py-5" data-test="checks">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <th>Код ответа</th>
+                    <th>h1</th>
+                    <th>title</th>
+                    <th>description</th>
+                    <th>Дата создания</th>
+                </tr>
+                {% if check_url %}
+                {% for check in check_url %}
+                <tr>
+                    <td>{{ check.id or '' }}</td>
+                    <td>{{ check.status_code or '' }}</td>
+                    <td>{{ check.h1 or '' }}</td>
+                    <td>{{ check.title or '' }}</td>
+                    <td>{{ check.description or '' }}</td>
+                    <td>{{ check.created_at or '' }}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
 </div>
-          </div>
-  </main>
 {% endblock %}

@@ -1,14 +1,14 @@
 import requests
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
+from datetime import datetime
+import datetime
 
 
-def refactor_data(data):
-    if data is not None:
-        new_dict = dict(zip(['id', 'name', 'created_at'], data))
-        return new_dict
-    else:
-        return None
+
+def get_date():
+    d = datetime.datetime.now().strftime('%Y-%m-%d')
+    return d
 
 
 def refactor_url(name):
@@ -32,10 +32,8 @@ def page_analyzer(url):
         h1 = soup.find('h1')
         title = soup.find('title')
         description = soup.find('meta', attrs={'name': 'description'})
-        return {'h1': h1,
-                'title': title,
-                'description': description['content']}
+        return {'h1': h1.text if h1 else None,
+                'title': title.text if title else None,
+                'description': description['content'] if description and 'content' in description.attrs else None}
     except Exception:
         raise Exception('Ошибка при проверке сайта')
-
-

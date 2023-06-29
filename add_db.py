@@ -16,5 +16,5 @@ def create_db():
     db.commit()
     db.close()
 
-print(DATABASE_URL)
+
 create_db()
