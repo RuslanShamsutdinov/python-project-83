@@ -29,7 +29,6 @@ def urls():
     table = 'urls'
     if request.method == 'GET':
         data = get_all_urls_checkurl()
-        logging.info(f'data взято из ДБ:{data}')
         return render_template('urls.html', data=data)
     elif request.method == 'POST':
         get_url = request.form.get('url')
@@ -39,11 +38,9 @@ def urls():
             name = refactor_url(get_url)
             if not get_by_name(table, name):
                 url_id = insert_into_urls(name, created_at)
-                logging.info(f'добавление url_id:{url_id}')
                 flash('Страница успешно добавлена', 'success')
             else:
                 url_id = get_by_name(table, name)['id']
-                logging.info(f'страница существует, url_id:{url_id}')
                 flash('Страница уже существует', 'warning')
             return redirect(url_for('url_page', url_id=url_id))
         else:
@@ -55,7 +52,6 @@ def urls():
 def url_page(url_id):
     url = get_by_id('urls', url_id)
     check_url = get_all_from_url_checks(url_id)
-    logging.info(f'def url_page| url:{url},\n check_url:{check_url}')
     if not url:
         return render_template('404.html')
     return render_template('url_id.html', url=url, check_url=check_url)
@@ -68,13 +64,10 @@ def url_check(url_id):
     try:
         status_code = check_status_code(url_name)
         parsed_data = page_analyzer(url_name)
-        logging.info(f'def url_check| status_code:{status_code}, parsed_data:{parsed_data}')
     except Exception:
         flash('Произошла ошибка при проверке', 'danger')
         return redirect(url_for('url_page', url_id=url_id))
     date = get_date()
-    logging_data = {'url_id': url_id, 'status_code': status_code, **parsed_data, 'created_at': date}
-    logging.info(f'запись в url_checks: {logging_data}')
     insert_into_url_checks(url_id=url_id, status_code=status_code, **parsed_data, created_at=date)
     flash('Страница успешно проверена', 'success')
     return redirect(url_for('url_page', url_id=url_id))
