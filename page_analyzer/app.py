@@ -1,12 +1,13 @@
-from flask import Flask, render_template, request, url_for, flash, redirect, g
+from flask import Flask, render_template, request, url_for, flash, redirect
 import validators
-import os
-from dotenv import load_dotenv
-from page_analyzer.db_tools import get_by_name, get_by_id, get_all_from_urls_db, get_all_urls_checkurl, \
-    insert_into_urls, insert_into_url_checks, get_all_from_url_checks
+from .db_tools import get_by_name, get_by_id, \
+    get_all_urls_checkurl, get_all_from_url_checks, insert_into_urls, \
+    insert_into_url_checks
+from .data_tools import get_date, page_analyzer, \
+    refactor_url, check_status_code
 import logging
-from page_analyzer.data_tools import check_status_code, page_analyzer
-from page_analyzer.data_tools import refactor_url, get_date
+from dotenv import load_dotenv
+import os
 
 logging.basicConfig(level=logging.INFO, filename="py_log.log", filemode="a")
 load_dotenv()
@@ -17,7 +18,7 @@ app.secret_key = "secret_key"
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 
-@app.route("/", methods=["POST", "GET"])  # Главная страница, Анализатор страниц
+@app.route("/", methods=["POST", "GET"])
 def index():
     logging.debug('index')
     return render_template('index.html')
@@ -68,7 +69,8 @@ def url_check(url_id):
         flash('Произошла ошибка при проверке', 'danger')
         return redirect(url_for('url_page', url_id=url_id))
     date = get_date()
-    insert_into_url_checks(url_id=url_id, status_code=status_code, **parsed_data, created_at=date)
+    insert_into_url_checks(url_id=url_id, status_code=status_code,
+                           **parsed_data, created_at=date)
     flash('Страница успешно проверена', 'success')
     return redirect(url_for('url_page', url_id=url_id))
 

@@ -2,12 +2,10 @@ import requests
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 from datetime import datetime
-import datetime
-
 
 
 def get_date():
-    d = datetime.datetime.now().strftime('%Y-%m-%d')
+    d = datetime.now().strftime('%Y-%m-%d')
     return d
 
 
@@ -34,6 +32,7 @@ def page_analyzer(url):
         description = soup.find('meta', attrs={'name': 'description'})
         return {'h1': h1.text if h1 else None,
                 'title': title.text if title else None,
-                'description': description['content'] if description and 'content' in description.attrs else None}
+                'description': description['content']
+                if description and 'content' in description.attrs else None}
     except Exception:
         raise Exception('Ошибка при проверке сайта')

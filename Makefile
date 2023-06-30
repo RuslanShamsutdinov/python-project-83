@@ -10,12 +10,12 @@ publish:
 	poetry publish --dry-run
 package-install:
 	python3 -m pip install --user dist/*.whl
-check:
-	poetry run flake8 gendiff
+lint:
+	poetry run flake8 page_analyzer
 test:
 	poetry run pytest -vv
 test-coverage:
-	poetry run pytest --cov=gendiff --cov-report xml
+	poetry run pytest --cov=page_analyzer --cov-report xml
 dev:
 	poetry run flask --app page_analyzer:app --debug run
 
