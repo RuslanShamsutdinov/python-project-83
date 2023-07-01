@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, flash, redirect
 import validators
-from .db_tools import get_by_name, get_by_id, \
-    get_all_urls_checkurl, get_all_from_url_checks, insert_into_urls, \
+from .db_tools import get_from_db, get_all_urls_checkurl, \
+    get_all_from_url_checks, insert_into_urls, \
     insert_into_url_checks
 from .data_tools import get_date, page_analyzer, \
     refactor_url, check_status_code
@@ -27,7 +27,6 @@ def index():
 @app.route("/urls", methods=["POST", "GET"])  # Сайты
 def urls():
     logging.debug('urls')
-    table = 'urls'
     if request.method == 'GET':
         data = get_all_urls_checkurl()
         return render_template('urls.html', data=data)
@@ -37,11 +36,12 @@ def urls():
         if validation:
             created_at = get_date()
             name = refactor_url(get_url)
-            if not get_by_name(table, name):
+            table = 'urls'
+            if not get_from_db(table, 'name', name):
                 url_id = insert_into_urls(name, created_at)
                 flash('Страница успешно добавлена', 'success')
             else:
-                url_id = get_by_name(table, name)['id']
+                url_id = get_from_db(table, 'name', name)['id']
                 flash('Страница уже существует', 'warning')
             return redirect(url_for('url_page', url_id=url_id))
         else:
@@ -51,7 +51,7 @@ def urls():
 
 @app.route("/urls/<int:url_id>")
 def url_page(url_id):
-    url = get_by_id('urls', url_id)
+    url = get_from_db('urls', 'id', url_id)
     check_url = get_all_from_url_checks(url_id)
     if not url:
         return render_template('404.html')
@@ -61,7 +61,7 @@ def url_page(url_id):
 @app.route('/url/<int:url_id>/checks', methods=["POST"])
 def url_check(url_id):
     logging.info('def url_check')
-    url_name = get_by_id('urls', url_id)['name']
+    url_name = get_from_db('urls', 'id', url_id)['name']
     try:
         status_code = check_status_code(url_name)
         parsed_data = page_analyzer(url_name)
@@ -83,4 +83,4 @@ def page_not_found(e):
 if __name__ == '__main__':
     app.run(debug=True)
 
-# sudo service postgresql start
+

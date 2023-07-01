@@ -45,30 +45,6 @@ def get_all_urls_checkurl():
         return None
 
 
-def get_by_name(table, name):
-    conn = psycopg2.connect(DATABASE_URL)
-    conn.autocommit = True
-    with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as curs:
-        curs.execute(sql.SQL("SELECT *  FROM {} WHERE name = %s LIMIT 1")
-                     .format(sql.Identifier(table)), (name,))
-        url = curs.fetchone()
-        if url:
-            return dict(url)
-        return None
-
-
-def get_by_id(table, url_id):
-    conn = psycopg2.connect(DATABASE_URL)
-    conn.autocommit = True
-    with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as curs:
-        curs.execute(sql.SQL("SELECT * FROM {} WHERE id = %s LIMIT 1")
-                     .format(sql.Identifier(table)), (url_id,))
-        url = curs.fetchone()
-        if url:
-            return dict(url)
-        return None
-
-
 def insert_into_urls(name, created_at):
     conn = psycopg2.connect(DATABASE_URL)
 
@@ -90,3 +66,16 @@ def insert_into_url_checks(url_id, status_code,
                      "description, created_at ) "
                      "VALUES(%s, %s, %s, %s, %s, %s) RETURNING id",
                      (url_id, status_code, h1, title, description, created_at))
+
+
+def get_from_db(table, db_column, data):
+    conn = psycopg2.connect(DATABASE_URL)
+    conn.autocommit = True
+    with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as curs:
+        curs.execute(sql.SQL("SELECT * FROM {} WHERE {} = %s LIMIT 1")
+                     .format(sql.Identifier(table),
+                             sql.Identifier(db_column)), (data,))
+        url = curs.fetchone()
+        if url:
+            return dict(url)
+        return None
