@@ -10,3 +10,13 @@ Link to app on Railway:
 
 - Checking the website for availability. 
 - Analysis for search queries.
+
+
+### Installation:
+
+1. Clone this repository
+2. Install the required packages using Poetry:
+< $ poetry install> or < make install >
+3. Run the application:
+< $ poetry run flask --app page_analyzer:app --debug run>
+or < make start >

@@ -1,13 +1,16 @@
 from flask import Flask, render_template, request, url_for, flash, redirect
 import validators
-from .db_tools import get_from_db, get_all_urls_checkurl, \
+from .db import get_from_db, get_all_urls_checkurl, \
     get_all_from_url_checks, insert_into_urls, \
     insert_into_url_checks
-from .data_tools import get_date, page_analyzer, \
-    refactor_url, check_status_code
-import logging
+from .urls import analyze_page, \
+    parse
+from datetime import datetime
 from dotenv import load_dotenv
+import requests
+import logging
 import os
+
 
 logging.basicConfig(level=logging.INFO, filename="py_log.log", filemode="a")
 load_dotenv()
@@ -34,14 +37,14 @@ def urls():
         get_url = request.form.get('url')
         validation = validators.url(get_url, public=True)
         if validation:
-            created_at = get_date()
-            name = refactor_url(get_url)
+            created_at = datetime.now().strftime('%Y-%m-%d')
+            name = parse(get_url)
             table = 'urls'
             if not get_from_db(table, 'name', name):
                 url_id = insert_into_urls(name, created_at)
                 flash('Страница успешно добавлена', 'success')
             else:
-                url_id = get_from_db(table, 'name', name)['id']
+                url_id = get_from_db(table, 'name', name).id
                 flash('Страница уже существует', 'warning')
             return redirect(url_for('url_page', url_id=url_id))
         else:
@@ -61,14 +64,14 @@ def url_page(url_id):
 @app.route('/url/<int:url_id>/checks', methods=["POST"])
 def url_check(url_id):
     logging.info('def url_check')
-    url_name = get_from_db('urls', 'id', url_id)['name']
+    url_name = get_from_db('urls', 'id', url_id).name
     try:
-        status_code = check_status_code(url_name)
-        parsed_data = page_analyzer(url_name)
+        status_code = requests.get(url_name).status_code
+        parsed_data = analyze_page(url_name)
     except Exception:
         flash('Произошла ошибка при проверке', 'danger')
         return redirect(url_for('url_page', url_id=url_id))
-    date = get_date()
+    date = datetime.now().strftime('%Y-%m-%d')
     insert_into_url_checks(url_id=url_id, status_code=status_code,
                            **parsed_data, created_at=date)
     flash('Страница успешно проверена', 'success')
