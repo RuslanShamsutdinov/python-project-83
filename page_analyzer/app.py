@@ -27,7 +27,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/urls", methods=["POST", "GET"])  # Сайты
+@app.route("/urls", methods=["POST", "GET"])
 def urls():
     logging.debug('urls')
     if request.method == 'GET':

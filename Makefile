@@ -2,11 +2,6 @@
 #
 #$(eval export $(shell sed -ne 's/ *#.*$$//; /./ s/=.*$$// p' .env))
 
-
-install:
-	poetry install
-build:
-	poetry build
 publish:
 	poetry publish --dry-run
 package-install:
@@ -18,3 +13,14 @@ dev:
 PORT ?= 8000
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
+
+MANAGE := poetry run python manage.py
+
+install: .env
+	@poetry install
+make-migration:
+	@$(MANAGE) makemigrations
+migrate: make-migration
+	@$(MANAGE) migrate
+
+build: install migrate
