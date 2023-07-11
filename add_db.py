@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 load_dotenv()
 app = Flask(__name__)
 # DATABASE_URL = os.getenv('DATABASE_URL')
-DATABASE_URL = 'postgres://postgresql_8byt_user:VOxGZcJm7VAHffDpDeZ3o01bojUnhz7H@dpg-cim3mdtgkuvinfm5tkvg-a.oregon-postgres.render.com/postgresql_8byt'
+DATABASE_URL = 'postgres://postgresql_8byt_user:VOxGZcJm7VAHff' \
+               'DpDeZ3o01bojUnhz7H@dpg-cim3mdtgkuvinfm5tkvg-a.oregon-postgres.render.com/postgresql_8byt'
 
 
 def create_db():
