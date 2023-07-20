@@ -67,7 +67,6 @@ pyparsing==2.4.7
 pyproject_hooks==1.0.0
 pytest==7.3.1
 pytest-cov==4.0.0
-python-apt==2.4.0+ubuntu1
 python-dotenv==0.21.1
 PyYAML==5.4.1
 requests==2.30.0
@@ -86,7 +85,6 @@ tensorflow-io-gcs-filesystem==0.32.0
 termcolor==2.3.0
 tomli==2.0.1
 typing_extensions==4.5.0
-unattended-upgrades==0.1
 urllib3==1.26.16
 validators==0.20.0
 virtualenv==20.24.1
