@@ -29,7 +29,7 @@ greenlet==2.0.2
 grpcio==1.56.0
 gunicorn==20.1.0
 h5py==3.9.0
-hexlet-code @ file:///home/ruslan_sh/python-project-83/dist/hexlet_code-0.1.0-py3-none-any.whl#sha256=b64c6edde977c0bda38003c2b10e27bd900f5b8ec85fb16cb0924d74913c298e
+hexlet-code
 html5lib==1.1
 httplib2==0.20.2
 idna==3.4
