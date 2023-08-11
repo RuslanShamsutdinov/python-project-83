@@ -3,8 +3,8 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/18834e7cdfadfee24cae/maintainability)](https://codeclimate.com/github/RuslanShamsutdinov/python-project-83/maintainability)
 [![Python CI](https://github.com/RuslanShamsutdinov/python-project-83/actions/workflows/pyci.yml/badge.svg)](https://github.com/RuslanShamsutdinov/python-project-83/actions/workflows/pyci.yml)
 
-Link to app on Railway:
-[Page analyzer app](https://web-production-4635.up.railway.app)
+Link to app on Render.com:
+[Page analyzer app](https://page-analyzer-xqa5.onrender.com)
 
 ### SEO analyzer:
 

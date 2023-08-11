@@ -4,8 +4,14 @@
 
 install:
 	poetry install
+
+DATABASE_URL ?= postgres://postgresql_8byt_user:VOxGZcJm7VAHffDpDeZ3o01bojUnhz7H@dpg-cim3mdtgkuvinfm5tkvg-a.oregon-postgres.render.com/postgresql_8byt
+
+database:
+	psql -a -d $(DATABASE_URL) -f database.sql
+
 build:
-	poetry build
+	install database
 publish:
 	poetry publish --dry-run
 package-install:
