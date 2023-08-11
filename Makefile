@@ -10,8 +10,8 @@ DATABASE_URL ?= postgres://postgresql_8byt_user:VOxGZcJm7VAHffDpDeZ3o01bojUnhz7H
 database:
 	psql -a -d $(DATABASE_URL) -f database.sql
 
-build:
-	install database
+build: install database
+
 publish:
 	poetry publish --dry-run
 package-install:
